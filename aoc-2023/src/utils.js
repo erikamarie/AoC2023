@@ -21,9 +21,6 @@ const getFirstAndLastDigit = (dirty) => {
     let converted = numToConvert;
     for (const [key, value] of Object.entries(TEXT_NUMS)) {
         const comboNum = value.slice(0, 1) + key + value.slice(value.length-1, value.length);
-        if(key === '6'){
-            console.log('comboNum', comboNum);
-        }
         converted = converted.replaceAll(value, comboNum);
       }
       return converted;
@@ -42,54 +39,69 @@ const parseGameData = (inputData) => {
 
     games.forEach((dirtyGame, index) => {
         if (dirtyGame.trim() === '') {
-            return; // Skip empty entries
+            return;
         }
         const game = dirtyGame.substring(dirtyGame.indexOf(":") + 1);
-
-        const gameData = { gameNumber: index + 1, colors: {} };
-
-        const counts = game.split(';')[0].trim().split(',').map(item => item.trim());
-        const colorData = {};
-
-        counts.forEach(count => {
-            const [countValue, color] = count.split(' ').filter(Boolean);
-            colorData[color.toLowerCase()] = parseInt(countValue, 10);
-        });
-
-        gameData.colors = colorData;
-
+        const gameData = { gameNumber: index + 1, rounds: [], minColors: {}, power: 0 };
+        const rounds = game.split(';');
+        rounds.forEach ((round) => {
+            const roundData = {};
+            const counts = round.trim().split(',').map(item => item.trim());
+            counts.forEach(count => {
+                const [countValue, color] = count.split(' ').filter(Boolean);
+                const colorName = color.toLowerCase();
+                const colorValue = parseInt(countValue, 10);
+                roundData[colorName] = colorValue;
+                // Part 2 : Get minimum number of each color per game
+                if (!gameData.minColors[colorName] ||
+                    (gameData.minColors[colorName] && (gameData.minColors[colorName] < colorValue))) {
+                    gameData.minColors[colorName] = colorValue;
+                }
+            });
+            gameData.rounds.push(roundData);
+        }); 
+        gameData.power = Object.values(gameData.minColors).reduce((total, currentValue) => total * currentValue, 1);
         result.push(gameData);
     });
-    console.log('gameData', result);
     return result;
 }
 
-const getMaxValues = (games) => {
-    let maxRed = 0;
-    let maxGreen = 0;
-    let maxBlue = 0;
-    // TODO: iterate values and return largest number
-    return { maxRed, maxBlue, maxGreen };
-};
-
 const getValidGames = (games, maxValues) => {
-    const validGames = [];
-    const { maxRed, maxBlue, maxGreen } = maxValues;
-    // TODO: update validGames with values less then or equal to max value
-    return validGames.length > 0 ? validGames : 0;
+    const { red: maxRed, blue: maxBlue, green: maxGreen } = maxValues;
+    const validGames = games.filter((game) => {
+        const { rounds } = game;
+        let validRound = true;
+        for (const { red=0, green=0, blue=0 } of rounds) {
+            validRound = !(red > maxRed || green > maxGreen || blue > maxBlue);
+            if(!validRound) {
+                break;
+            }
+        }
+        return validRound ? game : null;
+    });
+    return validGames.length > 0 ? validGames : [];
 }
 
-const getSumOfValidGameNumbers = (gameData) => {
-    console.log('gameData', gameData);
+const getSumProps = (values, sumProp) => {
+    const mappedValues = values.map(value => value[sumProp]);
+    const sumValues = (mappedValues || 0).reduce((total, currentValue) => total = total + currentValue,0);
+    return sumValues;
+}
+
+const getSumOfValidGameNumbersWithSumPower = (gameData, maxValues) => {
     const games = parseGameData(gameData);
-    const maxValues = getMaxValues(games);
     const validGames = getValidGames(games, maxValues);
-    const sumValidGames = (validGames || [0]).reduce((total, currentValue) => total = total + currentValue,0);
-    console.log('sumValidGames', sumValidGames);
-    return sumValidGames;
+    const sumPowers = getSumProps(validGames, 'power');
+    const allSumPowers = getSumProps(games, 'power');
+    const sumGames = getSumProps(validGames, 'gameNumber');
+    return { sumGames, sumPowers, allSumPowers };
 };
+
+const isNumValid = (numToValidate) => (numToValidate !== 0) && (numToValidate && numToValidate > 0);
+
 
 export {
     getSumFirstLastDigit,
-    getSumOfValidGameNumbers,
+    getSumOfValidGameNumbersWithSumPower,
+    isNumValid,
 };

@@ -12,14 +12,15 @@ import rawDay2 from './sampleData/day2.txt';
 
 import { 
     getSumFirstLastDigit,
-    getSumOfValidGameNumbers
+    getSumOfValidGameNumbersWithSumPower,
+    isNumValid,
 } from './utils';
   
+const ERROR = 'ERROR: Shitter was full, Clark!';
   class SnowGlobal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: 'Merry Christmas, shitter was full!',
             day1Result: null,
             day2Result: null,
         };
@@ -47,7 +48,12 @@ import {
         fetch(rawDay2)
         .then(r => r.text())
         .then(text => {
-            const day2Answer = getSumOfValidGameNumbers(text);
+            const maxValues = {
+                red: this.red || 0,
+                green: this.green || 0,
+                blue: this.blue || 0,
+            };
+            const day2Answer = getSumOfValidGameNumbersWithSumPower(text, maxValues);
             this.setState({
                 day2Result: day2Answer,
             });
@@ -55,40 +61,56 @@ import {
     }
     
     renderDay1 = () => {
-        const { day1Result, message } = this.state;
+        const { day1Result } = this.state;
         return (
             <div className="day1">
                 <text className="day-header">Day 1: Digit Code</text>
                 <Button variant="contained" onClick={this.getDay1Answer}>Day 1 Solution</Button>
                 <Item>
-                    { day1Result || message }
+                    { day1Result || ERROR }
                 </Item>
             </div>
         );
     }
-
+    setMaxColor = (event) => {
+        const { id, value } = event.target;
+        this[id] = value;
+    }
     renderDay2 = () => {
-        const { day2Result, message } = this.state;
-        const error = day2Result === 0 ? 'No Valid Games' : message;
-        const dayMessage = day2Result && day2Result > 0 ? day2Result : error;
+        const { day2Result } = this.state;
+        const { sumGames, sumPowers, allSumPowers } = day2Result || {};
+        const validGames = isNumValid(sumGames);
+        const validPower = isNumValid(sumPowers);
+        const validAllPower = isNumValid(allSumPowers);
+        const error = validGames ? 'No Valid Games' : ERROR;
+        const powerError = validPower ? 'No Valid Power' : error;
+        const allPowerError = validAllPower ? 'No Valid All Power' : ERROR;
+        const sumGamesMessage = validGames ? sumGames : error;
+        const sumPowerMessage = validPower ? sumPowers : powerError;
+        const sumAllPowerMessage = validAllPower ? allSumPowers : allPowerError;
         return (
             <div className="day2">
                 <text className="day-header">Day 2: The Game</text>
-                <TextField id="red" label="Red" variant="outlined" defaultValue={0}/>
-                <TextField id="red" label="Green" variant="outlined" defaultValue={0} />
-                <TextField id="red" label="Blue" variant="outlined" defaultValue={0}/>
+                <TextField id="red" label="Red" variant="outlined" onChange={this.setMaxColor}/>
+                <TextField id="green" label="Green" variant="outlined" onChange={this.setMaxColor} />
+                <TextField id="blue" label="Blue" variant="outlined" onChange={this.setMaxColor}/>
                 <div>
-                    <Button variant="contained" onClick={this.getDay2Answer}>Submit</Button>
+                    <Button variant="contained" onClick={this.getDay2Answer}>Get Valid Games</Button>
                 </div>
                 <div>
-                    { dayMessage }
+                    Sum of Valid Game Numbers: { sumGamesMessage }
+                </div>
+                <div>
+                    Sum of Valid Powers: { sumPowerMessage }
+                </div>
+                <div>
+                    Sum of ALL Powers: { sumAllPowerMessage }
                 </div>
             </div>
         );
     }
     
     render() {
-        console.log('Rendering...');
         return (
             <div className="snow-global-output">
                 <text className="header">Advent of Code 2023</text>
