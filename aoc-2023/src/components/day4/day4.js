@@ -1,12 +1,13 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import rawData from '../../sampleData/day3.txt';
-// import rawData from '../../sampleData/day3_sample.txt';
-import { getSumEngineParts } from './utils';
+import rawData from '../../sampleData/day4.txt';
+// import rawData from '../../sampleData/day4_sample.txt';
+// import rawData from '../../sampleData/day4_p2_sample.txt';
+import { getAnswers } from './utils';
 import { ERROR } from '../../utils';
 import { Item } from '../../customRenderers/Item';
   
-export class Day3 extends React.Component {
+export class Day4 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +19,7 @@ export class Day3 extends React.Component {
         fetch(rawData)
         .then(r => r.text())
         .then(text => {
-            const answer = getSumEngineParts(text);
+            const answer = getAnswers(text);
             this.setState({
                 result: answer,
             });
@@ -27,19 +28,19 @@ export class Day3 extends React.Component {
 
     render() {
         const { result } = this.state;
-        const { gearRatios, sumPartNumbers } = result || {};
+        const { part1, part2 } = result || {};
         return (
-            <div className="day1">
-                <text className="day-header">Day 3: The Engine</text>
+            <div className="day4">
+                <text className="day-header">Day 4: Scratchoff Winners</text>
                 <br />
-                <text> We need an engine code...</text>
+                <text> Get winning scratchoff tickets...</text>
                 <br />
-                <Button variant="contained" onClick={this.getAnswer}>Get Day 3 Answer</Button>
+                <Button variant="contained" onClick={this.getAnswer}>Get Day 4 Answer</Button>
                 <Item>
-                    Part 1: { sumPartNumbers || ERROR }
+                    Part 1: { part1 || ERROR }
                 </Item>
                 <Item>
-                    Part 2: { gearRatios || ERROR }
+                    Part 2: { part2 || ERROR }
                 </Item>
             </div>
         );
