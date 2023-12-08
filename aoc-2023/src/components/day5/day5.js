@@ -27,7 +27,7 @@ export class Day5 extends React.Component {
 
     render() {
         const { result } = this.state;
-        // const { part1, part2 } = result || {};
+        const { part1, part2 } = result || {};
         return (
             <div className="day4">
                 <text className="day-header">Day 5: Seed Fertilizer</text>
@@ -36,7 +36,10 @@ export class Day5 extends React.Component {
                 <br />
                 <Button variant="contained" onClick={this.getAnswer}>Get Day 5 Answer</Button>
                 <Item>
-                    Part 1: { result || ERROR }
+                    Part 1: { part1 || ERROR }
+                </Item>
+                <Item>
+                    Part 2: { part2 || ERROR }
                 </Item>
             </div>
         );
