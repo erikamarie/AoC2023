@@ -1,3 +1,4 @@
+// take the data and turn it into json to iterate
 const parseData = (inputData, withRange = false) => {
     const lines = inputData.split('\n');
     const maps = {};
@@ -28,21 +29,7 @@ const parseData = (inputData, withRange = false) => {
         }
         if (mapName === 'seeds') {
             if (withRange) {
-                // TODO: Rename this templine, already declared above
-                const tempLine = [];
-                console.log('lineArray:::::', lineArray.length);
-                for( let i = 0; i <= lineArray.length -2; i+=2) {
-                    tempLine.push(lineArray[i]);
-                    // console.log('WITH RANGE I',i);
-                    let numInserts = lineArray[i+1];
-                    for ( let j = 1; j < numInserts; j++) {
-                        const nextNum = lineArray[i] + j;
-                        // console.log('WITH RANGE J',j);
-                        tempLine.push(nextNum);
-                    }
-                }
-                console.log('TEMPLINE', tempLine);
-                lineArray = tempLine;
+                lineArray = getSeedsWithInserts(lineArray);
             }
             maps[mapName] = lineArray;
         } else if (lineArray.length === 3) {
@@ -58,6 +45,23 @@ const parseData = (inputData, withRange = false) => {
     return maps;
 }
 
+// helper function for part 2, to add the extra seeds
+const getSeedsWithInserts = (lineArray) => {
+    const tempLine = [];
+    console.log('lineArray:::::', lineArray.length);
+    for( let i = 0; i <= lineArray.length -2; i+=2) {
+        tempLine.push(lineArray[i]);
+        let numInserts = lineArray[i+1];
+        for ( let j = 1; j < numInserts; j++) {
+            const nextNum = lineArray[i] + j;
+            tempLine.push(nextNum);
+        }
+    }
+    console.log('TEMPLINE', tempLine);
+    return tempLine;
+};
+
+// helper function to find the min and max values in an array of values that the source value is between or greater than
 const findNumberRange = (rangeStarts, source) => {
     let range = [];
     const found = rangeStarts.findIndex((num, index, arr) => {
@@ -72,7 +76,8 @@ const findNumberRange = (rangeStarts, source) => {
     return range;
 };
 
-
+// our recursive function to keep mapping source values until there are no more maps
+// has lots of consts for debuggin lulz
 const getMapToValue = (source, map, maps) => {
     if(!map) {
         return source;
@@ -108,6 +113,9 @@ const getMapToValue = (source, map, maps) => {
     }
 }
 
+// take in data that has seeds and mappings
+// get the mapped value
+// find the lowest location in the mapped values
 const getLowestLocation = (maps) => {
     const seeds = maps['seeds'];
     let lowestLocation = null;
@@ -122,6 +130,8 @@ const getLowestLocation = (maps) => {
     });
     return lowestLocation
 };
+
+// TODO: create new function that returns lowest location listed and work backwards to see if we have it
 
 export const getAnswers = (inputData) => {
     // const maps_p1 = parseData(inputData);
