@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-import rawData from '../../sampleData/day2.txt';
+import rawData from './day2.txt';
 import { getSumOfValidGameNumbersWithSumPower } from './utils';
 import { ERROR, isNumValid } from '../../utils';
   

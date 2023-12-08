@@ -1,13 +1,12 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import rawData from './day4.txt';
-// import rawData from './day4_sample.txt';
-// import rawData from './day4_p2_sample.txt';
+import rawData from './day7.txt';
+// import rawData from './day7_sample.txt';
 import { getAnswers } from './utils';
 import { ERROR } from '../../utils';
 import { Item } from '../../customRenderers/Item';
   
-export class Day4 extends React.Component {
+export class Day7 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,19 +27,16 @@ export class Day4 extends React.Component {
 
     render() {
         const { result } = this.state;
-        const { part1, part2 } = result || {};
+        // const { part1, part2 } = result || {};
         return (
-            <div className="day4">
-                <text className="day-header">Day 4: Scratchoff Winners</text>
+            <div className="day">
+                <text className="day-header">Day 7: TBD</text>
                 <br />
-                <text> Get winning scratchoff tickets...</text>
+                <text> TBD...</text>
                 <br />
-                <Button variant="contained" onClick={this.getAnswer}>Get Day 4 Answer</Button>
+                <Button variant="contained" onClick={this.getAnswer}>Get Day 7 Answer</Button>
                 <Item>
-                    Part 1: { part1 || ERROR }
-                </Item>
-                <Item>
-                    Part 2: { part2 || ERROR }
+                    Part 1: { result || ERROR }
                 </Item>
             </div>
         );

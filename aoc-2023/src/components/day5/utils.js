@@ -54,7 +54,11 @@ const getSeedsWithInserts = (lineArray) => {
         let numInserts = lineArray[i+1];
         for ( let j = 1; j < numInserts; j++) {
             const nextNum = lineArray[i] + j;
-            tempLine.push(nextNum);
+            try {
+                tempLine.push(nextNum);
+            }catch(e) {
+                console.error('ERRORRRRRR:::::', e);
+            }
         }
     }
     console.log('TEMPLINE', tempLine);

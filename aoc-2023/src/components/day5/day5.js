@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-// import rawData from '../../sampleData/day5.txt';
-import rawData from '../../sampleData/day5_sample.txt';
+// import rawData from './day5.txt';
+import rawData from './day5_sample.txt';
 import { getAnswers } from './utils';
 import { ERROR } from '../../utils';
 import { Item } from '../../customRenderers/Item';
@@ -29,7 +29,7 @@ export class Day5 extends React.Component {
         const { result } = this.state;
         const { part1, part2 } = result || {};
         return (
-            <div className="day4">
+            <div className="day">
                 <text className="day-header">Day 5: Seed Fertilizer</text>
                 <br />
                 <text> If you give a seed fertilizer...</text>

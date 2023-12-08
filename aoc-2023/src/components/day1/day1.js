@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import rawData from '../../sampleData/day1.txt';
+import rawData from './day1.txt';
 import { getSumFirstLastDigit } from './utils';
 import { ERROR } from '../../utils';
 import { Item } from '../../customRenderers/Item';

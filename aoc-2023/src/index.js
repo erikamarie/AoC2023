@@ -10,12 +10,24 @@ import { Day2 } from './components/day2/day2';
 import { Day3 } from './components/day3/day3';
 import { Day4 } from './components/day4/day4';
 import { Day5 } from './components/day5/day5';
+import { Day6 } from './components/day6/day6';
+import { Day7 } from './components/day7/day7';
+import { Day8 } from './components/day8/day8';
 
   
   class SnowGlobal extends React.Component {
     renderComponents = () => {
         return (
             <Stack spacing={4}>
+                <Item>
+                    <Day8></Day8>
+                </Item>
+                <Item>
+                    <Day7></Day7>
+                </Item>
+                <Item>
+                    <Day6></Day6>
+                </Item>
                 <Item>
                     <Day5></Day5>
                 </Item>

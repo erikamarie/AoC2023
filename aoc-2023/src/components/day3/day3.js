@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import rawData from '../../sampleData/day3.txt';
-// import rawData from '../../sampleData/day3_sample.txt';
+import rawData from './day3.txt';
+// import rawData from './day3_sample.txt';
 import { getSumEngineParts } from './utils';
 import { ERROR } from '../../utils';
 import { Item } from '../../customRenderers/Item';
